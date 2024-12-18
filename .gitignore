@@ -2,4 +2,7 @@
 /node_modules
 
 # config
-/config
+/config/default.ts
+
+# .env file
+.env

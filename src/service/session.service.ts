@@ -6,8 +6,8 @@ import { verifyJwt, signJwt } from "../utils/jwt";
 import { findUser } from "./user.service";
 
 export async function createSession(userId: string, userAgent: string) {
+  console.log("Creating session for user ID:", userId); 
   const session = await SessionModel.create({ user: userId, userAgent });
-
   return session.toJSON();
 }
 
@@ -42,7 +42,7 @@ export async function reIssueAccessToken({
   const accessToken = signJwt(
     { ...user, session: session._id },
     "accessTokenPrivateKey",
-    { expiresIn: config.get("accessTokenTtl") } // 15 minutes
+    { expiresIn: config.get("accessTokenTtl") } 
   );
 
   return accessToken;
