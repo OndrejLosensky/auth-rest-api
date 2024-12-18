@@ -16,13 +16,14 @@ const deserializeUser = async (
   const refreshToken = get(req, "headers.x-refresh");
 
   if (!accessToken) {
+    console.log("No access token found, proceeding without user"); // Log when no access token is present
     return next();
   }
 
   const { decoded, expired } = verifyJwt(accessToken, "accessTokenPublicKey");
 
   if (decoded) {
-    console.log("User decoded:", decoded); // Add this line for logging
+    console.log("Decoded user from access token:", decoded); // Log the decoded user
     res.locals.user = decoded;
     return next();
   }
@@ -37,11 +38,12 @@ const deserializeUser = async (
 
     const result = verifyJwt(newAccessToken as string, "accessTokenPublicKey");
 
+    console.log("Decoded user from new access token:", result.decoded); // Log the decoded user from new token
     res.locals.user = result.decoded;
     return next();
   }
 
+  console.log("Access token expired and no refresh token available, proceeding without user"); // Log when both tokens are absent
   return next();
 };
-
 export default deserializeUser;

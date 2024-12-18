@@ -10,7 +10,7 @@ export function signJwt(
 
   return jwt.sign(object, signingKey, {
     ...(options && options),
-    algorithm: "RS256",
+    algorithm: "HS256",
   });
 }
 
@@ -21,7 +21,7 @@ export function verifyJwt(
   const publicKey = config.get<string>(keyName);
 
   try {
-    const decoded = jwt.verify(token, publicKey);
+    const decoded = jwt.verify(token, publicKey, { algorithms: ["HS256"] });
     return {
       valid: true,
       expired: false,
